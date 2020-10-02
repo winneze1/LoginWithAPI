@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              colors: [Colors.blue, Colors.teal],
+              colors: [Colors.orange, Colors.blueAccent],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter),
         ),
@@ -35,11 +35,34 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   headerSection(),
                   textSection(),
+                  errorNotice(),
                   buttonSection(),
                 ],
               ),
       ),
     );
+  }
+
+  Padding errorNotice() {
+    return error != null
+        ? Padding(
+            padding: const EdgeInsets.fromLTRB(10.0, 10, 10, 5),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Text(
+                    error,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+          )
+        : null;
   }
 
   signIn(String email, pass) async {
@@ -54,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLoading = false;
         });
+        error = '';
         sharedPreferences.setString("LoginCode", "200");
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (BuildContext context) => MyApp()),
@@ -88,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                 signIn(emailController.text, passwordController.text);
               },
         elevation: 0.0,
-        color: Colors.purple,
+        color: Colors.orangeAccent,
         child: Text("Sign In", style: TextStyle(color: Colors.white70)),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
       ),
